@@ -1,0 +1,5 @@
+# Top-level runtime dependencies (input to tools/gen_lock.py).
+# The installable, hash-pinned lock is requirements/runtime.lock.
+mediapipe==1.0.0
+opencv-python==5.0.0.93
+numpy==2.4.6

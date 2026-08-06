@@ -1,0 +1,53 @@
+# All actions are pinned to full commit SHAs and all Python dependencies are
+# installed with pip's hash-checking mode (--require-hashes) from
+# requirements/ci.lock, so CI runs only supply-chain-verified code.
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5.1.0
+        with:
+          persist-credentials: false
+      - name: Set up Python
+        uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1 # v6.3.0
+        with:
+          python-version: "3.12"
+      - name: Install pinned tools
+        run: python -m pip install --require-hashes -r requirements/ci.lock
+      - name: Lint
+        run: ruff check --output-format=github .
+      - name: Format check
+        run: ruff format --check .
+
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: ["3.11", "3.12"]
+    steps:
+      - name: Checkout
+        uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5.1.0
+        with:
+          persist-credentials: false
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1 # v6.3.0
+        with:
+          python-version: ${{ matrix.python-version }}
+      - name: Install pinned test dependencies
+        run: python -m pip install --require-hashes -r requirements/ci.lock
+      # The package is exercised from the source tree (pytest pythonpath),
+      # so no unpinned build backend ever gets installed in CI.
+      - name: Run tests
+        run: python -m pytest --cov --cov-report=term --cov-fail-under=85

@@ -1,0 +1,55 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "easyfbt"
+version = "0.1.0"
+description = "Webcam full-body + face tracking for SteamVR (VMT / VRChat OSC / VRCFT-style output)"
+readme = "README.md"
+license = { file = "LICENSE" }
+requires-python = ">=3.11"
+dependencies = [
+    "numpy>=2.0,<3",
+    "mediapipe>=1.0,<2",
+    "opencv-python>=5.0,<6",
+]
+
+[project.optional-dependencies]
+dev = ["pytest>=9", "pytest-cov>=7", "ruff>=0.16"]
+
+[project.scripts]
+easyfbt = "easyfbt.__main__:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.pytest.ini_options]
+pythonpath = ["src", "."]
+testpaths = ["tests"]
+addopts = "-q"
+
+[tool.ruff]
+line-length = 100
+target-version = "py311"
+src = ["src", "tests", "tools"]
+
+[tool.ruff.lint]
+select = ["E", "F", "W", "I", "UP", "B", "S", "N", "RUF"]
+ignore = [
+    "S311", # random is fine for jitter, not used for crypto
+]
+
+[tool.ruff.lint.per-file-ignores]
+"tests/*" = ["S101", "S104"] # asserts and 0.0.0.0 binds are fine in tests
+
+[tool.coverage.run]
+source = ["easyfbt"]
+omit = [
+    # Requires cameras / GUI / the mediapipe wheel; exercised by hardware smoke
+    # tests, not unit CI.
+    "*/backends/mediapipe_backend.py",
+    "*/capture.py",
+    "*/debugview.py",
+    "*/__main__.py",
+]
