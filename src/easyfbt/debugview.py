@@ -88,16 +88,20 @@ def draw_overlay(
 
     if face is not None and tracking.expressions:
         top = sorted(tracking.expressions.items(), key=lambda kv: -kv[1])
-        bar_x = w - 240
+        bar_x = max(0, w - 330)
         by = 24
         for name, value in top[:_TOP_EXPRESSIONS]:
             cv2.rectangle(
-                canvas, (bar_x, by - 10), (bar_x + int(120 * value), by), (255, 128, 0), -1
+                canvas,
+                (bar_x, by - 10),
+                (bar_x + int(100 * max(0.0, min(1.0, value))), by),
+                (255, 128, 0),
+                -1,
             )
             cv2.putText(
                 canvas,
                 f"{name} {value:.2f}",
-                (bar_x + 124, by),
+                (bar_x + 106, by),
                 cv2.FONT_HERSHEY_SIMPLEX,
                 0.4,
                 (255, 255, 255),
