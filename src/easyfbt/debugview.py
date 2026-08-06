@@ -1,9 +1,20 @@
-"""OpenCV debug window: skeleton overlay, expression bars, tracker readout."""
+"""Debug views: skeleton overlay, expression bars, tracker readout.
+
+Two sinks share the same overlay renderer:
+
+* :class:`DebugView` -- local OpenCV window (needs a display);
+* :class:`HttpDebugView` -- annotated JPEG + state pushed to a
+  :class:`easyfbt.debug_http.DebugHttpServer` (works headless/in containers).
+
+Several views can run at once via :class:`MultiView`.
+"""
 
 from __future__ import annotations
 
 import numpy as np
 
+from easyfbt.debug_http import DebugHttpServer
+from easyfbt.outputs.udp_json import frame_to_dict
 from easyfbt.types import FaceResult, PoseResult, TrackingFrame
 
 # MediaPipe 33-landmark skeleton edges (subset that reads well on screen).
@@ -31,8 +42,73 @@ SKELETON_EDGES = [
 _TOP_EXPRESSIONS = 12
 
 
+def draw_overlay(
+    frame_bgr: np.ndarray,
+    pose: PoseResult | None,
+    face: FaceResult | None,
+    tracking: TrackingFrame,
+) -> np.ndarray:
+    """Return a copy of the frame annotated with the current tracking state."""
+    import cv2
+
+    canvas = frame_bgr.copy()
+    h, w = canvas.shape[:2]
+
+    if pose is not None and pose.image_landmarks is not None:
+        pts = (pose.image_landmarks * np.array([w, h])).astype(int)
+        for a, b in SKELETON_EDGES:
+            if pose.visibility[a] > 0.5 and pose.visibility[b] > 0.5:
+                cv2.line(canvas, tuple(pts[a]), tuple(pts[b]), (0, 255, 0), 2)
+        for i, p in enumerate(pts):
+            if pose.visibility[i] > 0.5:
+                cv2.circle(canvas, tuple(p), 3, (0, 128, 255), -1)
+
+    y = 24
+    cv2.putText(
+        canvas,
+        f"fps {tracking.fps:5.1f}  trackers {len(tracking.trackers)}",
+        (8, y),
+        cv2.FONT_HERSHEY_SIMPLEX,
+        0.6,
+        (255, 255, 0),
+        2,
+    )
+    for t in tracking.trackers:
+        y += 20
+        px, py, pz = t.position
+        cv2.putText(
+            canvas,
+            f"{t.role.value:12s} ({px:+.2f} {py:+.2f} {pz:+.2f})",
+            (8, y),
+            cv2.FONT_HERSHEY_SIMPLEX,
+            0.45,
+            (200, 255, 200),
+            1,
+        )
+
+    if face is not None and tracking.expressions:
+        top = sorted(tracking.expressions.items(), key=lambda kv: -kv[1])
+        bar_x = w - 240
+        by = 24
+        for name, value in top[:_TOP_EXPRESSIONS]:
+            cv2.rectangle(
+                canvas, (bar_x, by - 10), (bar_x + int(120 * value), by), (255, 128, 0), -1
+            )
+            cv2.putText(
+                canvas,
+                f"{name} {value:.2f}",
+                (bar_x + 124, by),
+                cv2.FONT_HERSHEY_SIMPLEX,
+                0.4,
+                (255, 255, 255),
+                1,
+            )
+            by += 18
+    return canvas
+
+
 class DebugView:
-    """Renders per-camera previews; returns False when the user quits."""
+    """Local OpenCV window; render() returns False when the user quits."""
 
     def __init__(self, window_name: str = "easyfbt debug"):
         import cv2
@@ -48,63 +124,55 @@ class DebugView:
         face: FaceResult | None,
         tracking: TrackingFrame,
     ) -> bool:
-        cv2 = self._cv2
-        canvas = frame_bgr.copy()
-        h, w = canvas.shape[:2]
-
-        if pose is not None and pose.image_landmarks is not None:
-            pts = (pose.image_landmarks * np.array([w, h])).astype(int)
-            for a, b in SKELETON_EDGES:
-                if pose.visibility[a] > 0.5 and pose.visibility[b] > 0.5:
-                    cv2.line(canvas, tuple(pts[a]), tuple(pts[b]), (0, 255, 0), 2)
-            for i, p in enumerate(pts):
-                if pose.visibility[i] > 0.5:
-                    cv2.circle(canvas, tuple(p), 3, (0, 128, 255), -1)
-
-        y = 24
-        cv2.putText(
-            canvas,
-            f"fps {tracking.fps:5.1f}  trackers {len(tracking.trackers)}",
-            (8, y),
-            cv2.FONT_HERSHEY_SIMPLEX,
-            0.6,
-            (255, 255, 0),
-            2,
-        )
-        for t in tracking.trackers:
-            y += 20
-            px, py, pz = t.position
-            cv2.putText(
-                canvas,
-                f"{t.role.value:12s} ({px:+.2f} {py:+.2f} {pz:+.2f})",
-                (8, y),
-                cv2.FONT_HERSHEY_SIMPLEX,
-                0.45,
-                (200, 255, 200),
-                1,
-            )
-
-        if face is not None and tracking.expressions:
-            top = sorted(tracking.expressions.items(), key=lambda kv: -kv[1])
-            bar_x = w - 240
-            by = 24
-            for name, value in top[:_TOP_EXPRESSIONS]:
-                cv2.rectangle(
-                    canvas, (bar_x, by - 10), (bar_x + int(120 * value), by), (255, 128, 0), -1
-                )
-                cv2.putText(
-                    canvas,
-                    f"{name} {value:.2f}",
-                    (bar_x + 124, by),
-                    cv2.FONT_HERSHEY_SIMPLEX,
-                    0.4,
-                    (255, 255, 255),
-                    1,
-                )
-                by += 18
-
-        cv2.imshow(self._window, canvas)
-        return cv2.waitKey(1) & 0xFF != ord("q")
+        canvas = draw_overlay(frame_bgr, pose, face, tracking)
+        self._cv2.imshow(self._window, canvas)
+        return self._cv2.waitKey(1) & 0xFF != ord("q")
 
     def close(self) -> None:
         self._cv2.destroyWindow(self._window)
+
+
+class HttpDebugView:
+    """Publishes the annotated preview to a DebugHttpServer (headless)."""
+
+    def __init__(self, host: str = "127.0.0.1", port: int = 8089, jpeg_quality: int = 80):
+        import cv2
+
+        self._cv2 = cv2
+        self._quality = jpeg_quality
+        self.server = DebugHttpServer(host, port)
+
+    def render(
+        self,
+        frame_bgr: np.ndarray,
+        pose: PoseResult | None,
+        face: FaceResult | None,
+        tracking: TrackingFrame,
+    ) -> bool:
+        canvas = draw_overlay(frame_bgr, pose, face, tracking)
+        ok, jpeg = self._cv2.imencode(
+            ".jpg", canvas, [int(self._cv2.IMWRITE_JPEG_QUALITY), self._quality]
+        )
+        if ok:
+            self.server.update(jpeg.tobytes(), frame_to_dict(tracking))
+        return True
+
+    def close(self) -> None:
+        self.server.close()
+
+
+class MultiView:
+    """Fans render() out to several views; stops when any view asks to quit."""
+
+    def __init__(self, views: list):
+        self._views = views
+
+    def render(self, frame_bgr, pose, face, tracking) -> bool:
+        keep_going = True
+        for view in self._views:
+            keep_going = view.render(frame_bgr, pose, face, tracking) and keep_going
+        return keep_going
+
+    def close(self) -> None:
+        for view in self._views:
+            view.close()

@@ -20,7 +20,10 @@ DEFAULT_ROLES = [
 
 @dataclass
 class CameraConfig:
-    device: int = 0
+    #: OpenCV capture source: a local device index (0, 1, ...) or a stream
+    #: URL string (MJPEG over http://, rtsp://, ...).  URL sources let a
+    #: container consume video without host device passthrough.
+    device: int | str = 0
     width: int = 1280
     height: int = 720
     fps: int = 30
@@ -82,6 +85,11 @@ class ModelsConfig:
 @dataclass
 class DebugConfig:
     window: bool = True
+    #: Browser-based debug view (MJPEG + JSON state over HTTP).  The one
+    #: debug surface that works from inside a container.
+    http_enabled: bool = False
+    http_host: str = "127.0.0.1"
+    http_port: int = 8089
 
 
 @dataclass
@@ -160,4 +168,9 @@ def parse_config(data: dict) -> Config:
 
     _apply(cfg.models, data.get("models", {}), "models")
     _apply(cfg.debug, data.get("debug", {}), "debug")
+    if not 0 < cfg.debug.http_port < 65536:
+        raise ConfigError(f"debug.http_port out of range: {cfg.debug.http_port}")
+    for i, cam in enumerate(cfg.cameras):
+        if not isinstance(cam.device, int | str):
+            raise ConfigError(f"camera[{i}].device must be an index or URL string")
     return cfg

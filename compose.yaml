@@ -1,0 +1,30 @@
+# docker compose up --build   /   podman-compose up --build
+#
+# Shared surface is kept minimal:
+# - camera device (drop `devices:` when using a network camera URL instead)
+# - debug port published on 127.0.0.1 only
+# - outbound UDP (OSC) to the host; no inbound ports needed for tracking
+services:
+  easyfbt:
+    build: .
+    devices:
+      - /dev/video0:/dev/video0
+    # /dev/video* is owned by the host's `video` group; give the non-root
+    # container user that group. Adjust the GID (getent group video).
+    group_add:
+      - "44"
+    ports:
+      - "127.0.0.1:8089:8089"
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    # Override the baked-in config by mounting your own:
+    # volumes:
+    #   - ./config.container.toml:/config/config.toml:ro
+    read_only: true
+    tmpfs:
+      - /tmp
+    security_opt:
+      - no-new-privileges:true
+    cap_drop:
+      - ALL
+    restart: unless-stopped
