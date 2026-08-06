@@ -51,6 +51,7 @@ port = 9199
 
 [debug]
 window = false
+show_video = true
 http_enabled = true
 # Bind on all container interfaces; compose publishes it to 127.0.0.1 only.
 http_host = "0.0.0.0"

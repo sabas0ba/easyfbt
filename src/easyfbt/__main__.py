@@ -10,27 +10,8 @@ from easyfbt import __version__
 from easyfbt.config import Config, load_config
 
 
-def build_pipeline(config: Config):
-    """Wire real cameras, backends and outputs from the config."""
-    from easyfbt.app import CameraUnit, Pipeline
-    from easyfbt.backends.mediapipe_backend import MediaPipeFaceBackend, MediaPipePoseBackend
-    from easyfbt.capture import CameraSource
-
-    cameras = []
-    for cam_cfg in config.cameras:
-        cameras.append(
-            CameraUnit(
-                source=CameraSource(cam_cfg),
-                yaw_deg=cam_cfg.yaw_deg,
-                pose_backend=(
-                    MediaPipePoseBackend(config.models.pose_model) if cam_cfg.pose else None
-                ),
-                face_backend=(
-                    MediaPipeFaceBackend(config.models.face_model) if cam_cfg.face else None
-                ),
-            )
-        )
-
+def build_outputs(config: Config) -> list:
+    """Construct the enabled output sinks (also used for live re-config)."""
     outputs = []
     if config.vmt.enabled:
         from easyfbt.outputs.vmt import VmtOutput
@@ -55,8 +36,31 @@ def build_pipeline(config: Config):
         from easyfbt.outputs.udp_json import UdpJsonOutput
 
         outputs.append(UdpJsonOutput(config.udp_json.host, config.udp_json.port))
+    return outputs
 
-    return Pipeline(config, cameras, outputs)
+
+def build_pipeline(config: Config):
+    """Wire real cameras, backends and outputs from the config."""
+    from easyfbt.app import CameraUnit, Pipeline
+    from easyfbt.backends.mediapipe_backend import MediaPipeFaceBackend, MediaPipePoseBackend
+    from easyfbt.capture import CameraSource
+
+    cameras = []
+    for cam_cfg in config.cameras:
+        cameras.append(
+            CameraUnit(
+                source=CameraSource(cam_cfg),
+                yaw_deg=cam_cfg.yaw_deg,
+                pose_backend=(
+                    MediaPipePoseBackend(config.models.pose_model) if cam_cfg.pose else None
+                ),
+                face_backend=(
+                    MediaPipeFaceBackend(config.models.face_model) if cam_cfg.face else None
+                ),
+            )
+        )
+
+    return Pipeline(config, cameras, build_outputs(config))
 
 
 def main(argv: list[str] | None = None) -> int:
@@ -93,12 +97,16 @@ def main(argv: list[str] | None = None) -> int:
     if config.debug.window and not args.no_window:
         from easyfbt.debugview import DebugView
 
-        views.append(DebugView())
+        views.append(DebugView(show_video=config.debug.show_video))
     if config.debug.http_enabled:
+        from easyfbt.control import Controller
         from easyfbt.debugview import HttpDebugView
 
-        http_view = HttpDebugView(config.debug.http_host, config.debug.http_port)
-        print(f"debug view: http://{config.debug.http_host}:{http_view.server.port}/")
+        controller = Controller(config, args.config, pipeline, build_outputs)
+        http_view = HttpDebugView(
+            config.debug.http_host, config.debug.http_port, controller=controller
+        )
+        print(f"control panel: http://{config.debug.http_host}:{http_view.server.port}/")
         views.append(http_view)
     view = None
     if views:

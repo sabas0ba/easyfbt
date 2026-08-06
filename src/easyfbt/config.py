@@ -85,6 +85,10 @@ class ModelsConfig:
 @dataclass
 class DebugConfig:
     window: bool = True
+    #: Draw the camera image behind the overlay.  Off = skeleton on black
+    #: (privacy: the video never leaves the process).  The OpenCV window
+    #: toggles this live with the ``v`` key, the browser UI with a checkbox.
+    show_video: bool = True
     #: Browser-based debug view (MJPEG + JSON state over HTTP).  The one
     #: debug surface that works from inside a container.
     http_enabled: bool = False

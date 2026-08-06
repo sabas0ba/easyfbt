@@ -63,3 +63,8 @@ port = 9199
 
 [debug]
 window = true
+show_video = true      # false: 黒背景にスケルトンのみ(ウィンドウでは v キーで切替)
+# ブラウザの設定/キャリブレーションUI (http://127.0.0.1:8089/)
+http_enabled = false
+http_host = "127.0.0.1"
+http_port = 8089

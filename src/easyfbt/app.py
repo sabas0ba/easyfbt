@@ -12,6 +12,7 @@ pipeline runs headless in tests with fakes.
 
 from __future__ import annotations
 
+import threading
 import time
 from dataclasses import dataclass
 
@@ -48,6 +49,8 @@ class Pipeline:
         self._cameras = cameras
         self._outputs = outputs
         self._clock = clock
+        #: Serialises step() against live re-configuration from the UI thread.
+        self._lock = threading.Lock()
         self._landmark_filter = OneEuroFilter(
             min_cutoff=config.tracking.smoothing_min_cutoff,
             beta=config.tracking.smoothing_beta,
@@ -72,8 +75,39 @@ class Pipeline:
         for out in self._outputs:
             out.close()
 
+    def swap_outputs(self, new_outputs: list[Output]) -> None:
+        """Replace all output sinks live (closes the old ones)."""
+        with self._lock:
+            old, self._outputs = self._outputs, new_outputs
+        for out in old:
+            out.close()
+
+    def set_camera_pose(self, index: int, yaw_deg: float) -> None:
+        """Live-update a camera's room orientation."""
+        with self._lock:
+            self._cameras[index].yaw_deg = yaw_deg
+
+    def apply_tracking_config(self, tracking) -> None:
+        """Live-update tracking parameters; resets smoothing if it changed."""
+        with self._lock:
+            old = self._config.tracking
+            smoothing_changed = (
+                old.smoothing_min_cutoff != tracking.smoothing_min_cutoff
+                or old.smoothing_beta != tracking.smoothing_beta
+            )
+            self._config.tracking = tracking
+            if smoothing_changed:
+                self._landmark_filter = OneEuroFilter(
+                    min_cutoff=tracking.smoothing_min_cutoff,
+                    beta=tracking.smoothing_beta,
+                )
+
     def step(self) -> TrackingFrame:
         """Process the newest frame of every camera and emit one fused frame."""
+        with self._lock:
+            return self._step_locked()
+
+    def _step_locked(self) -> TrackingFrame:
         now = self._clock()
         poses: list[PoseResult] = []
         faces: list[FaceResult] = []
@@ -132,11 +166,11 @@ class Pipeline:
     def run(self, view=None, max_iterations: int | None = None) -> None:
         """Main loop; blocks until quit (debug window 'q'), Ctrl-C or
         ``max_iterations``."""
-        interval = 1.0 / self._config.tracking.target_fps
         iterations = 0
         self.start()
         try:
             while max_iterations is None or iterations < max_iterations:
+                interval = 1.0 / self._config.tracking.target_fps
                 started = self._clock()
                 tracking = self.step()
                 if view is not None:
