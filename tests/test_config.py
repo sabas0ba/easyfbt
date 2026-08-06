@@ -78,3 +78,39 @@ def test_zero_fps_rejected():
 def test_all_tracking_disabled_rejected():
     with pytest.raises(ConfigError, match="at least one"):
         parse("[[camera]]\npose = false\nface = false")
+
+
+def test_camera_device_url():
+    cfg = parse('[[camera]]\ndevice = "http://host.docker.internal:8080/video"')
+    assert cfg.cameras[0].device == "http://host.docker.internal:8080/video"
+
+
+def test_camera_device_bad_type_rejected():
+    with pytest.raises(ConfigError, match="device"):
+        parse("[[camera]]\ndevice = 1.5")
+
+
+def test_debug_http_settings():
+    cfg = parse('[debug]\nhttp_enabled = true\nhttp_host = "0.0.0.0"\nhttp_port = 9000')
+    assert cfg.debug.http_enabled is True
+    assert cfg.debug.http_host == "0.0.0.0"
+    assert cfg.debug.http_port == 9000
+
+
+def test_debug_http_defaults_off():
+    cfg = parse("")
+    assert cfg.debug.http_enabled is False
+    assert cfg.debug.http_port == 8089
+
+
+def test_debug_http_bad_port_rejected():
+    with pytest.raises(ConfigError, match="http_port"):
+        parse("[debug]\nhttp_port = 0")
+
+
+def test_container_config_is_valid():
+    cfg = load_config(Path(__file__).resolve().parent.parent / "config.container.toml")
+    assert cfg.debug.window is False
+    assert cfg.debug.http_enabled is True
+    assert cfg.vrchat.host == "host.docker.internal"
+    assert cfg.models.pose_model.startswith("/app/models/")

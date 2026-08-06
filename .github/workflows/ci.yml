@@ -76,3 +76,29 @@ jobs:
           python tools/fetch_test_assets.py
       - name: Run e2e tests
         run: python -m pytest -m e2e --no-cov
+
+  # Container image: build (digest-pinned base, hash-checked deps, verified
+  # models baked in) and smoke-test the entrypoint headlessly.
+  docker:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5.1.0
+        with:
+          persist-credentials: false
+      - name: Build image
+        run: docker build -t easyfbt:ci .
+      - name: Smoke test entrypoint
+        run: docker run --rm easyfbt:ci --version
+      - name: Smoke test imports and baked-in assets
+        run: |
+          docker run --rm --entrypoint python easyfbt:ci -c "
+          import pathlib
+          import cv2, mediapipe, numpy
+          import easyfbt
+          from easyfbt.config import load_config
+          cfg = load_config('/config/config.toml')
+          for m in (cfg.models.pose_model, cfg.models.face_model):
+              assert pathlib.Path(m).is_file(), m
+          print('easyfbt', easyfbt.__version__, 'image OK')
+          "

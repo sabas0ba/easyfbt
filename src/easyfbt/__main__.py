@@ -89,11 +89,22 @@ def main(argv: list[str] | None = None) -> int:
     config = load_config(args.config)
 
     pipeline = build_pipeline(config)
-    view = None
+    views = []
     if config.debug.window and not args.no_window:
         from easyfbt.debugview import DebugView
 
-        view = DebugView()
+        views.append(DebugView())
+    if config.debug.http_enabled:
+        from easyfbt.debugview import HttpDebugView
+
+        http_view = HttpDebugView(config.debug.http_host, config.debug.http_port)
+        print(f"debug view: http://{config.debug.http_host}:{http_view.server.port}/")
+        views.append(http_view)
+    view = None
+    if views:
+        from easyfbt.debugview import MultiView
+
+        view = views[0] if len(views) == 1 else MultiView(views)
     pipeline.run(view=view)
     return 0
 

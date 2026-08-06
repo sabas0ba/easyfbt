@@ -1,0 +1,57 @@
+# Container config: OSC goes to the host (VRChat / SteamVR+VMT run there),
+# the debug view is served over HTTP instead of an OpenCV window.
+#
+# `host.docker.internal` resolves to the host from Docker Desktop and Podman
+# machines; on a Linux engine add `--add-host=host.docker.internal:host-gateway`
+# (compose.yaml does this).
+
+[tracking]
+target_fps = 30.0
+user_height = 1.70
+roles = ["hip", "left_foot", "right_foot", "left_knee", "right_knee", "chest"]
+
+[[camera]]
+# Passed-through V4L2 device (compose maps /dev/video0), or replace with a
+# network stream URL, e.g. "http://host.docker.internal:8080/video" for an
+# MJPEG source on the host -- then no device passthrough is needed at all.
+device = 0
+width = 1280
+height = 720
+fps = 30
+position = [0.0, 1.0, 2.0]
+yaw_deg = 0.0
+pose = true
+face = true
+
+[models]
+pose_model = "/app/models/pose_landmarker_full.task"
+face_model = "/app/models/face_landmarker.task"
+
+[output.vmt]
+enabled = false
+host = "host.docker.internal"
+port = 39570
+
+[output.vrchat]
+enabled = true
+host = "host.docker.internal"
+port = 9000
+
+[output.vrcft]
+enabled = true
+host = "host.docker.internal"
+port = 9000
+address_prefix = "/avatar/parameters/v2/"
+send_eyes = true
+
+[output.udp_json]
+enabled = false
+host = "host.docker.internal"
+port = 9199
+
+[debug]
+window = false
+http_enabled = true
+# Bind on all container interfaces; compose publishes it to 127.0.0.1 only.
+http_host = "0.0.0.0"
+http_port = 8089

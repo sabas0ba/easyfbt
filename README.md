@@ -75,6 +75,36 @@ python -m easyfbt --config config.toml
 `config.example.toml` の 2 台目の例を参照。各カメラの部屋内位置 `position` と向き `yaw_deg` を
 設定すると、ランドマーク単位の可視性重みで融合され、オクルージョンに強くなります。
 
+## Docker / Podman で動かす(コンテナ隔離)
+
+トラッキング処理(カメラ入力→推論→OSC送出)をコンテナ内に閉じ込められます。
+ホストと共有するのは最小限:**カメラデバイス(またはネットワークカメラURL)/
+127.0.0.1限定のデバッグ用1ポート/ホストへのoutbound UDP(OSC)** のみです。
+Windows Defender等にリアルタイム保護の例外を作る必要はなく、コンテナは
+non-root・read-only rootfs・`cap_drop: ALL`・`no-new-privileges` で動作します。
+
+```bash
+docker compose up --build       # または podman-compose up --build
+# デバッグ画面: http://127.0.0.1:8089/ (MJPEG + /state で JSON)
+```
+
+- ベースイメージは**ダイジェスト固定**(`python:3.12-slim@sha256:646fb0…`、Docker公式イメージのAWSミラー)。
+  依存は `--require-hashes`、モデルはビルド時にSHA-256検証してイメージに焼き込み、実行時のダウンロードはありません
+- OSC の宛先は `host.docker.internal`(Linuxエンジンでは compose の `host-gateway` 設定が解決)。
+  outbound UDP なのでポート公開は不要です
+- 設定を変えるには `config.container.toml` を編集して再ビルドするか、
+  compose の volumes で `/config/config.toml` に自分の設定をマウントします
+
+**Windows でのカメラ入力(2通り)**
+
+1. **USBパススルー**: [usbipd-win](https://github.com/dorssel/usbipd-win) で
+   `usbipd bind` → `usbipd attach --wsl` するとWSL2カーネルに `/dev/video0` が現れ、
+   compose の `devices:` マッピングがそのまま使えます
+2. **ネットワークカメラ(確実な代替)**: デバイスパススルーが難しい環境では、
+   ホスト側でMJPEG配信(OBS の VirtualCam + 配信プラグイン、スマホのIPカメラアプリ等)し、
+   `config.container.toml` の `device` を `"http://host.docker.internal:8080/video"` のような
+   URLに変えるだけで動きます(`devices:` と `group_add:` は削除可)
+
 ## UDP JSON データインターフェース
 
 `[output.udp_json] enabled = true` で 1 フレームごとに以下の JSON が届きます:
