@@ -8,7 +8,12 @@
 #   verification; the container makes no implicit downloads at runtime.
 # - Runs as a non-root user; no build tooling in the final environment
 #   (the package is used from source via PYTHONPATH).
-FROM public.ecr.aws/docker/library/python:3.12-slim@sha256:646fb0bca3dd3ea1bcc6feb72c17ed16eed6e10cffc732fcc1478bd3e7f02d7b
+# The same digest is published identically on Docker Hub; override BASE_IMAGE
+# (keeping the digest!) if your network can reach one registry but not the
+# other, e.g.:
+#   docker build --build-arg BASE_IMAGE=docker.io/library/python:3.12-slim@sha256:646fb0bca3dd3ea1bcc6feb72c17ed16eed6e10cffc732fcc1478bd3e7f02d7b .
+ARG BASE_IMAGE=public.ecr.aws/docker/library/python:3.12-slim@sha256:646fb0bca3dd3ea1bcc6feb72c17ed16eed6e10cffc732fcc1478bd3e7f02d7b
+FROM ${BASE_IMAGE}
 
 # Native libraries needed by opencv-python (GUI-less usage still links them).
 # apt packages are integrity-checked by Debian's signed repositories.
