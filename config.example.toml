@@ -1,0 +1,65 @@
+# easyfbt configuration. Copy to config.toml and adjust.
+#
+# Room space is SteamVR convention: right-handed, +Y up, metres.
+# Camera yaw 0 = the camera looks along -Z (e.g. placed at +Z in front of a
+# user standing at the origin, facing the camera).
+
+[tracking]
+target_fps = 30.0
+user_height = 1.70          # metres; sets the hip anchor height
+smoothing_min_cutoff = 1.0  # One Euro: lower = smoother at rest
+smoothing_beta = 0.02       # One Euro: higher = less lag on fast motion
+min_visibility = 0.5        # drop trackers whose landmarks fall below this
+roles = ["hip", "left_foot", "right_foot", "left_knee", "right_knee", "chest"]
+
+# One [[camera]] block per webcam. Add more blocks for multi-camera fusion.
+[[camera]]
+device = 0
+width = 1280
+height = 720
+fps = 30
+position = [0.0, 1.0, 2.0]
+yaw_deg = 0.0
+pose = true
+face = true
+
+# Example second camera at the user's right side:
+# [[camera]]
+# device = 1
+# position = [2.0, 1.0, 0.0]
+# yaw_deg = 90.0
+# pose = true
+# face = false
+
+[models]
+pose_model = "models/pose_landmarker_full.task"
+face_model = "models/face_landmarker.task"
+
+# SteamVR virtual trackers via the VMT (Virtual Motion Tracker) driver.
+[output.vmt]
+enabled = false
+host = "127.0.0.1"
+port = 39570
+
+# VRChat native OSC trackers (works without SteamVR trackers).
+[output.vrchat]
+enabled = true
+host = "127.0.0.1"
+port = 9000
+
+# Face tracking, VRCFT-style Unified Expressions parameters.
+[output.vrcft]
+enabled = true
+host = "127.0.0.1"
+port = 9000
+address_prefix = "/avatar/parameters/v2/"
+send_eyes = true
+
+# Generic data interface: one JSON document per UDP datagram.
+[output.udp_json]
+enabled = false
+host = "127.0.0.1"
+port = 9199
+
+[debug]
+window = true

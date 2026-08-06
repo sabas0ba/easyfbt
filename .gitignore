@@ -1,0 +1,19 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+venv/
+build/
+dist/
+
+# Test / tooling
+.coverage
+.pytest_cache/
+.ruff_cache/
+
+# Local runtime artifacts (models are fetched by tools/fetch_models.py,
+# e2e assets by tools/fetch_test_assets.py)
+models/
+config.toml
+tests/e2e/assets/
