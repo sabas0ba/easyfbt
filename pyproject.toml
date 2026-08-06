@@ -27,7 +27,12 @@ where = ["src"]
 [tool.pytest.ini_options]
 pythonpath = ["src", "."]
 testpaths = ["tests"]
-addopts = "-q"
+# e2e tests need the mediapipe wheel + model files; run them explicitly with
+# `pytest -m e2e` (a -m given on the command line overrides this default).
+addopts = "-q -m 'not e2e'"
+markers = [
+    "e2e: end-to-end tests using the real MediaPipe models and test assets",
+]
 
 [tool.ruff]
 line-length = 100

@@ -1,0 +1,140 @@
+{
+ "expressions": {
+  "BrowInnerUpLeft": 0.0004,
+  "BrowInnerUpRight": 0.0004,
+  "BrowLowererLeft": 0.7761,
+  "BrowLowererRight": 0.7637,
+  "BrowOuterUpLeft": 0.0004,
+  "BrowOuterUpRight": 0.0005,
+  "BrowPinchLeft": 0.7761,
+  "BrowPinchRight": 0.7637,
+  "CheekPuffLeft": 0.0012,
+  "CheekPuffRight": 0.0012,
+  "CheekSquintLeft": 0.0,
+  "CheekSquintRight": 0.0,
+  "EyeClosedLeft": 0.2452,
+  "EyeClosedRight": 0.2487,
+  "EyeLeftX": -0.1139,
+  "EyeLeftY": -0.0206,
+  "EyeLidLeft": 0.567,
+  "EyeLidRight": 0.5645,
+  "EyeRightX": -0.0426,
+  "EyeRightY": -0.0374,
+  "EyeSquintLeft": 0.7374,
+  "EyeSquintRight": 0.6426,
+  "EyeWideLeft": 0.0036,
+  "EyeWideRight": 0.0043,
+  "EyeX": -0.0783,
+  "EyeY": -0.029,
+  "JawForward": 0.0027,
+  "JawLeft": 0.001,
+  "JawOpen": 0.1043,
+  "JawRight": 0.0002,
+  "LipFunnelLowerLeft": 0.005,
+  "LipFunnelLowerRight": 0.005,
+  "LipFunnelUpperLeft": 0.005,
+  "LipFunnelUpperRight": 0.005,
+  "LipPuckerLowerLeft": 0.002,
+  "LipPuckerLowerRight": 0.002,
+  "LipPuckerUpperLeft": 0.002,
+  "LipPuckerUpperRight": 0.002,
+  "LipSuckLowerLeft": 0.0104,
+  "LipSuckLowerRight": 0.0104,
+  "LipSuckUpperLeft": 0.0649,
+  "LipSuckUpperRight": 0.0649,
+  "MouthClosed": 0.016,
+  "MouthCornerPullLeft": 0.9473,
+  "MouthCornerPullRight": 0.9255,
+  "MouthCornerSlantLeft": 0.9473,
+  "MouthCornerSlantRight": 0.9255,
+  "MouthDimpleLeft": 0.0172,
+  "MouthDimpleRight": 0.0187,
+  "MouthFrownLeft": 0.0007,
+  "MouthFrownRight": 0.0006,
+  "MouthLowerDownLeft": 0.0407,
+  "MouthLowerDownRight": 0.1174,
+  "MouthLowerLeft": 0.0005,
+  "MouthLowerRight": 0.0018,
+  "MouthPressLeft": 0.1429,
+  "MouthPressRight": 0.1216,
+  "MouthRaiserLower": 0.0057,
+  "MouthRaiserUpper": 0.0045,
+  "MouthStretchLeft": 0.0971,
+  "MouthStretchRight": 0.1219,
+  "MouthUpperLeft": 0.0005,
+  "MouthUpperRight": 0.0018,
+  "MouthUpperUpLeft": 0.7908,
+  "MouthUpperUpRight": 0.7734,
+  "NoseSneerLeft": 0.0,
+  "NoseSneerRight": 0.0
+ },
+ "eyes": {
+  "pitch": -0.0152,
+  "yaw": 0.041
+ },
+ "fps": 30.0,
+ "t": 100.13333333333333,
+ "trackers": [
+  {
+   "index": 1,
+   "pos": [
+    -0.00013,
+    0.90122,
+    -0.00123
+   ],
+   "role": "hip",
+   "rot": [
+    0.01004,
+    0.98897,
+    0.14528,
+    0.02716
+   ]
+  },
+  {
+   "index": 6,
+   "pos": [
+    0.00551,
+    1.35306,
+    0.13462
+   ],
+   "role": "chest",
+   "rot": [
+    0.01168,
+    0.9886,
+    0.14516,
+    0.03834
+   ]
+  },
+  {
+   "index": 7,
+   "pos": [
+    0.09242,
+    1.13359,
+    0.16188
+   ],
+   "role": "left_elbow",
+   "rot": [
+    -0.33388,
+    -0.52815,
+    -0.26403,
+    0.73476
+   ]
+  },
+  {
+   "index": 8,
+   "pos": [
+    -0.18146,
+    1.14027,
+    0.1589
+   ],
+   "role": "right_elbow",
+   "rot": [
+    -0.32716,
+    0.5629,
+    0.10773,
+    0.75134
+   ]
+  }
+ ],
+ "v": 1
+}

@@ -99,7 +99,34 @@ ruff check . && ruff format --check .
 - カメラや mediapipe を使わずに全パイプラインをテストできるよう、フレームソース・バックエンド・
   出力・クロックをすべて注入可能にしています(`tests/test_app_integration.py` 参照)。
 - OSC はエンコード結果をゴールデンバイト列とデコーダで検証、Unity 座標変換・オイラー角は往復テストで検証。
-- CI (GitHub Actions) は lint + Python 3.11/3.12 のテストマトリクスを実行し、カバレッジ 85% 未満で失敗します。
+- CI (GitHub Actions) は lint + Python 3.11/3.12 のテストマトリクス + 実モデル e2e を実行し、カバレッジ 85% 未満で失敗します。
+
+### ゴールデンサンプルテスト
+
+台本化した決定論的なセッション(体のヨー回転+腕上げ+表情変化、固定クロック)を実パイプラインに流し、
+**4出力すべての全パケット**(VMT / VRChat / VRCFT の OSC をデコードしたもの + UDP JSON)を
+`tests/golden/scripted_session.json` と照合します。出力仕様を意図的に変えた場合は:
+
+```bash
+pytest tests/test_golden_outputs.py --update-goldens   # ゴールデンを再生成して差分をレビュー
+```
+
+### e2e テスト(実モデル・実画像)
+
+実際の MediaPipe モデルとハッシュ検証済みのテスト画像で、システムとしての機能性を検証します:
+
+```bash
+pip install --require-hashes -r requirements/runtime.lock
+python tools/fetch_models.py        # モデル(SHA-256 検証)
+python tools/fetch_test_assets.py   # テスト画像(SHA-256 検証)
+pytest -m e2e                       # 通常の pytest 実行からは除外されています
+```
+
+検証内容: 笑顔のポートレートから `MouthCornerPull* > 0.5` 等のもっともらしい表情パラメータが出ること、
+上半身のみの画像で脚のトラッカーが可視性ゲーティングで正しく除外されること(hip/chest/肘のみ出力)、
+OSC パケットの整形式性、および最終フレームの UDP JSON を許容誤差付きゴールデン
+`tests/e2e/golden/portrait_session.json` と照合(モデル推論は CPU により微差が出るため tol=0.05)。
+再生成は `pytest -m e2e --update-goldens`。
 
 ## セキュリティ / サプライチェーン
 

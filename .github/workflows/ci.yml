@@ -51,3 +51,28 @@ jobs:
       # so no unpinned build backend ever gets installed in CI.
       - name: Run tests
         run: python -m pytest --cov --cov-report=term --cov-fail-under=85
+
+  # Functional end-to-end check: the real MediaPipe models process a real
+  # (hash-verified) photo through the full pipeline to real UDP outputs, and
+  # the result is compared against the committed golden sample.
+  e2e:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5.1.0
+        with:
+          persist-credentials: false
+      - name: Set up Python
+        uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1 # v6.3.0
+        with:
+          python-version: "3.12"
+      - name: Install pinned dependencies
+        run: |
+          python -m pip install --require-hashes -r requirements/ci.lock
+          python -m pip install --require-hashes -r requirements/runtime.lock
+      - name: Fetch models and test assets (sha256-verified)
+        run: |
+          python tools/fetch_models.py
+          python tools/fetch_test_assets.py
+      - name: Run e2e tests
+        run: python -m pytest -m e2e --no-cov

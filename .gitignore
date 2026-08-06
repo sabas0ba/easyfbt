@@ -12,6 +12,8 @@ dist/
 .pytest_cache/
 .ruff_cache/
 
-# Local runtime artifacts (models are fetched by tools/fetch_models.py)
+# Local runtime artifacts (models are fetched by tools/fetch_models.py,
+# e2e assets by tools/fetch_test_assets.py)
 models/
 config.toml
+tests/e2e/assets/

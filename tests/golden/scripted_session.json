@@ -1,0 +1,1724 @@
+{
+ "steps": [
+  {
+   "udp_json": {
+    "expressions": {
+     "EyeClosedLeft": 0.0,
+     "EyeLeftX": 0.0,
+     "EyeLeftY": 0.3,
+     "EyeLidLeft": 0.75,
+     "EyeLidRight": 0.75,
+     "EyeRightX": 0.0,
+     "EyeRightY": 0.3,
+     "EyeX": 0.0,
+     "EyeY": 0.3,
+     "JawOpen": 0.0,
+     "LipFunnelLowerLeft": 0.0,
+     "LipFunnelLowerRight": 0.0,
+     "LipFunnelUpperLeft": 0.0,
+     "LipFunnelUpperRight": 0.0,
+     "MouthCornerPullLeft": 0.8,
+     "MouthCornerPullRight": 0.7,
+     "MouthCornerSlantLeft": 0.8,
+     "MouthCornerSlantRight": 0.7
+    },
+    "eyes": {
+     "pitch": 0.05,
+     "yaw": -0.1
+    },
+    "fps": 0.0,
+    "t": 100.0,
+    "trackers": [
+     {
+      "index": 1,
+      "pos": [
+       0.0,
+       0.901,
+       0.0
+      ],
+      "role": "hip",
+      "rot": [
+       0.0,
+       1.0,
+       -0.0,
+       -0.0
+      ]
+     },
+     {
+      "index": 2,
+      "pos": [
+       0.1,
+       0.051,
+       0.0
+      ],
+      "role": "left_foot",
+      "rot": [
+       0.0,
+       1.0,
+       -0.0,
+       -0.0
+      ]
+     },
+     {
+      "index": 3,
+      "pos": [
+       -0.1,
+       0.051,
+       0.0
+      ],
+      "role": "right_foot",
+      "rot": [
+       0.0,
+       1.0,
+       -0.0,
+       -0.0
+      ]
+     },
+     {
+      "index": 4,
+      "pos": [
+       0.1,
+       0.451,
+       0.03
+      ],
+      "role": "left_knee",
+      "rot": [
+       0.0,
+       1.0,
+       -0.0,
+       -0.0
+      ]
+     },
+     {
+      "index": 5,
+      "pos": [
+       -0.1,
+       0.451,
+       0.03
+      ],
+      "role": "right_knee",
+      "rot": [
+       0.0,
+       1.0,
+       -0.0,
+       -0.0
+      ]
+     },
+     {
+      "index": 6,
+      "pos": [
+       0.0,
+       1.401,
+       0.0
+      ],
+      "role": "chest",
+      "rot": [
+       0.0,
+       1.0,
+       -0.0,
+       -0.0
+      ]
+     }
+    ],
+    "v": 1
+   },
+   "vmt": [
+    {
+     "addr": "/VMT/Room/Unity",
+     "args": [
+      1,
+      1,
+      0.0,
+      0.0,
+      0.901,
+      -0.0,
+      -0.0,
+      -1.0,
+      -0.0,
+      -0.0
+     ]
+    },
+    {
+     "addr": "/VMT/Room/Unity",
+     "args": [
+      2,
+      1,
+      0.0,
+      0.1,
+      0.051,
+      -0.0,
+      -0.0,
+      -1.0,
+      -0.0,
+      -0.0
+     ]
+    },
+    {
+     "addr": "/VMT/Room/Unity",
+     "args": [
+      3,
+      1,
+      0.0,
+      -0.1,
+      0.051,
+      -0.0,
+      -0.0,
+      -1.0,
+      -0.0,
+      -0.0
+     ]
+    },
+    {
+     "addr": "/VMT/Room/Unity",
+     "args": [
+      4,
+      1,
+      0.0,
+      0.1,
+      0.451,
+      -0.03,
+      -0.0,
+      -1.0,
+      -0.0,
+      -0.0
+     ]
+    },
+    {
+     "addr": "/VMT/Room/Unity",
+     "args": [
+      5,
+      1,
+      0.0,
+      -0.1,
+      0.451,
+      -0.03,
+      -0.0,
+      -1.0,
+      -0.0,
+      -0.0
+     ]
+    },
+    {
+     "addr": "/VMT/Room/Unity",
+     "args": [
+      6,
+      1,
+      0.0,
+      0.0,
+      1.401,
+      -0.0,
+      -0.0,
+      -1.0,
+      -0.0,
+      -0.0
+     ]
+    }
+   ],
+   "vrcft": [
+    {
+     "addr": "/avatar/parameters/v2/JawOpen",
+     "args": [
+      0.0
+     ]
+    },
+    {
+     "addr": "/avatar/parameters/v2/MouthCornerPullLeft",
+     "args": [
+      0.8
+     ]
+    },
+    {
+     "addr": "/avatar/parameters/v2/MouthCornerSlantLeft",
+     "args": [
+      0.8
+     ]
+    },
+    {
+     "addr": "/avatar/parameters/v2/MouthCornerPullRight",
+     "args": [
+      0.7
+     ]
+    },
+    {
+     "addr": "/avatar/parameters/v2/MouthCornerSlantRight",
+     "args": [
+      0.7
+     ]
+    },
+    {
+     "addr": "/avatar/parameters/v2/EyeClosedLeft",
+     "args": [
+      0.0
+     ]
+    },
+    {
+     "addr": "/avatar/parameters/v2/LipFunnelUpperLeft",
+     "args": [
+      0.0
+     ]
+    },
+    {
+     "addr": "/avatar/parameters/v2/LipFunnelUpperRight",
+     "args": [
+      0.0
+     ]
+    },
+    {
+     "addr": "/avatar/parameters/v2/LipFunnelLowerLeft",
+     "args": [
+      0.0
+     ]
+    },
+    {
+     "addr": "/avatar/parameters/v2/LipFunnelLowerRight",
+     "args": [
+      0.0
+     ]
+    },
+    {
+     "addr": "/avatar/parameters/v2/EyeLeftX",
+     "args": [
+      0.0
+     ]
+    },
+    {
+     "addr": "/avatar/parameters/v2/EyeLeftY",
+     "args": [
+      0.3
+     ]
+    },
+    {
+     "addr": "/avatar/parameters/v2/EyeRightX",
+     "args": [
+      0.0
+     ]
+    },
+    {
+     "addr": "/avatar/parameters/v2/EyeRightY",
+     "args": [
+      0.3
+     ]
+    },
+    {
+     "addr": "/avatar/parameters/v2/EyeX",
+     "args": [
+      0.0
+     ]
+    },
+    {
+     "addr": "/avatar/parameters/v2/EyeY",
+     "args": [
+      0.3
+     ]
+    },
+    {
+     "addr": "/avatar/parameters/v2/EyeLidLeft",
+     "args": [
+      0.75
+     ]
+    },
+    {
+     "addr": "/avatar/parameters/v2/EyeLidRight",
+     "args": [
+      0.75
+     ]
+    },
+    {
+     "addr": "/tracking/eye/CenterPitchYaw",
+     "args": [
+      -2.86479,
+      5.72958
+     ]
+    }
+   ],
+   "vrchat": [
+    {
+     "addr": "/tracking/trackers/1/position",
+     "args": [
+      0.0,
+      0.901,
+      -0.0
+     ]
+    },
+    {
+     "addr": "/tracking/trackers/1/rotation",
+     "args": [
+      0.0,
+      180.0,
+      0.0
+     ]
+    },
+    {
+     "addr": "/tracking/trackers/2/position",
+     "args": [
+      0.1,
+      0.051,
+      -0.0
+     ]
+    },
+    {
+     "addr": "/tracking/trackers/2/rotation",
+     "args": [
+      0.0,
+      180.0,
+      0.0
+     ]
+    },
+    {
+     "addr": "/tracking/trackers/3/position",
+     "args": [
+      -0.1,
+      0.051,
+      -0.0
+     ]
+    },
+    {
+     "addr": "/tracking/trackers/3/rotation",
+     "args": [
+      0.0,
+      180.0,
+      0.0
+     ]
+    },
+    {
+     "addr": "/tracking/trackers/4/position",
+     "args": [
+      0.1,
+      0.451,
+      -0.03
+     ]
+    },
+    {
+     "addr": "/tracking/trackers/4/rotation",
+     "args": [
+      0.0,
+      180.0,
+      0.0
+     ]
+    },
+    {
+     "addr": "/tracking/trackers/5/position",
+     "args": [
+      -0.1,
+      0.451,
+      -0.03
+     ]
+    },
+    {
+     "addr": "/tracking/trackers/5/rotation",
+     "args": [
+      0.0,
+      180.0,
+      0.0
+     ]
+    },
+    {
+     "addr": "/tracking/trackers/6/position",
+     "args": [
+      0.0,
+      1.401,
+      -0.0
+     ]
+    },
+    {
+     "addr": "/tracking/trackers/6/rotation",
+     "args": [
+      0.0,
+      180.0,
+      0.0
+     ]
+    }
+   ]
+  },
+  {
+   "udp_json": {
+    "expressions": {
+     "EyeClosedLeft": 0.3,
+     "EyeLeftX": 0.0,
+     "EyeLeftY": 0.3,
+     "EyeLidLeft": 0.525,
+     "EyeLidRight": 0.75,
+     "EyeRightX": 0.0,
+     "EyeRightY": 0.3,
+     "EyeX": 0.0,
+     "EyeY": 0.3,
+     "JawOpen": 0.2,
+     "LipFunnelLowerLeft": 0.1,
+     "LipFunnelLowerRight": 0.1,
+     "LipFunnelUpperLeft": 0.1,
+     "LipFunnelUpperRight": 0.1,
+     "MouthCornerPullLeft": 0.6,
+     "MouthCornerPullRight": 0.5,
+     "MouthCornerSlantLeft": 0.6,
+     "MouthCornerSlantRight": 0.5
+    },
+    "eyes": {
+     "pitch": 0.05,
+     "yaw": -0.1
+    },
+    "fps": 30.0,
+    "t": 100.03333,
+    "trackers": [
+     {
+      "index": 1,
+      "pos": [
+       0.0,
+       0.901,
+       0.0
+      ],
+      "role": "hip",
+      "rot": [
+       0.0,
+       0.99989,
+       0.0,
+       -0.01509
+      ]
+     },
+     {
+      "index": 2,
+      "pos": [
+       0.09974,
+       0.051,
+       -0.00301
+      ],
+      "role": "left_foot",
+      "rot": [
+       0.0,
+       0.99989,
+       -0.0,
+       -0.01509
+      ]
+     },
+     {
+      "index": 3,
+      "pos": [
+       -0.09974,
+       0.051,
+       0.00301
+      ],
+      "role": "right_foot",
+      "rot": [
+       0.0,
+       0.99989,
+       -0.0,
+       -0.0151
+      ]
+     },
+     {
+      "index": 4,
+      "pos": [
+       0.10064,
+       0.451,
+       0.02691
+      ],
+      "role": "left_knee",
+      "rot": [
+       0.0,
+       0.99989,
+       -0.0,
+       -0.01507
+      ]
+     },
+     {
+      "index": 5,
+      "pos": [
+       -0.09883,
+       0.451,
+       0.03293
+      ],
+      "role": "right_knee",
+      "rot": [
+       0.0,
+       0.99989,
+       -0.0,
+       -0.01508
+      ]
+     },
+     {
+      "index": 6,
+      "pos": [
+       0.0,
+       1.401,
+       0.0
+      ],
+      "role": "chest",
+      "rot": [
+       0.0,
+       0.99989,
+       0.0,
+       -0.0151
+      ]
+     }
+    ],
+    "v": 1
+   },
+   "vmt": [
+    {
+     "addr": "/VMT/Room/Unity",
+     "args": [
+      1,
+      1,
+      0.0,
+      0.0,
+      0.901,
+      -0.0,
+      -0.0,
+      -0.99989,
+      0.0,
+      -0.01509
+     ]
+    },
+    {
+     "addr": "/VMT/Room/Unity",
+     "args": [
+      2,
+      1,
+      0.0,
+      0.09974,
+      0.051,
+      0.00301,
+      -0.0,
+      -0.99989,
+      -0.0,
+      -0.01509
+     ]
+    },
+    {
+     "addr": "/VMT/Room/Unity",
+     "args": [
+      3,
+      1,
+      0.0,
+      -0.09974,
+      0.051,
+      -0.00301,
+      -0.0,
+      -0.99989,
+      -0.0,
+      -0.0151
+     ]
+    },
+    {
+     "addr": "/VMT/Room/Unity",
+     "args": [
+      4,
+      1,
+      0.0,
+      0.10064,
+      0.451,
+      -0.02691,
+      -0.0,
+      -0.99989,
+      -0.0,
+      -0.01507
+     ]
+    },
+    {
+     "addr": "/VMT/Room/Unity",
+     "args": [
+      5,
+      1,
+      0.0,
+      -0.09883,
+      0.451,
+      -0.03293,
+      -0.0,
+      -0.99989,
+      -0.0,
+      -0.01508
+     ]
+    },
+    {
+     "addr": "/VMT/Room/Unity",
+     "args": [
+      6,
+      1,
+      0.0,
+      0.0,
+      1.401,
+      -0.0,
+      -0.0,
+      -0.99989,
+      0.0,
+      -0.0151
+     ]
+    }
+   ],
+   "vrcft": [
+    {
+     "addr": "/avatar/parameters/v2/JawOpen",
+     "args": [
+      0.2
+     ]
+    },
+    {
+     "addr": "/avatar/parameters/v2/MouthCornerPullLeft",
+     "args": [
+      0.6
+     ]
+    },
+    {
+     "addr": "/avatar/parameters/v2/MouthCornerSlantLeft",
+     "args": [
+      0.6
+     ]
+    },
+    {
+     "addr": "/avatar/parameters/v2/MouthCornerPullRight",
+     "args": [
+      0.5
+     ]
+    },
+    {
+     "addr": "/avatar/parameters/v2/MouthCornerSlantRight",
+     "args": [
+      0.5
+     ]
+    },
+    {
+     "addr": "/avatar/parameters/v2/EyeClosedLeft",
+     "args": [
+      0.3
+     ]
+    },
+    {
+     "addr": "/avatar/parameters/v2/LipFunnelUpperLeft",
+     "args": [
+      0.1
+     ]
+    },
+    {
+     "addr": "/avatar/parameters/v2/LipFunnelUpperRight",
+     "args": [
+      0.1
+     ]
+    },
+    {
+     "addr": "/avatar/parameters/v2/LipFunnelLowerLeft",
+     "args": [
+      0.1
+     ]
+    },
+    {
+     "addr": "/avatar/parameters/v2/LipFunnelLowerRight",
+     "args": [
+      0.1
+     ]
+    },
+    {
+     "addr": "/avatar/parameters/v2/EyeLeftX",
+     "args": [
+      0.0
+     ]
+    },
+    {
+     "addr": "/avatar/parameters/v2/EyeLeftY",
+     "args": [
+      0.3
+     ]
+    },
+    {
+     "addr": "/avatar/parameters/v2/EyeRightX",
+     "args": [
+      0.0
+     ]
+    },
+    {
+     "addr": "/avatar/parameters/v2/EyeRightY",
+     "args": [
+      0.3
+     ]
+    },
+    {
+     "addr": "/avatar/parameters/v2/EyeX",
+     "args": [
+      0.0
+     ]
+    },
+    {
+     "addr": "/avatar/parameters/v2/EyeY",
+     "args": [
+      0.3
+     ]
+    },
+    {
+     "addr": "/avatar/parameters/v2/EyeLidLeft",
+     "args": [
+      0.525
+     ]
+    },
+    {
+     "addr": "/avatar/parameters/v2/EyeLidRight",
+     "args": [
+      0.75
+     ]
+    },
+    {
+     "addr": "/tracking/eye/CenterPitchYaw",
+     "args": [
+      -2.86479,
+      5.72958
+     ]
+    }
+   ],
+   "vrchat": [
+    {
+     "addr": "/tracking/trackers/1/position",
+     "args": [
+      0.0,
+      0.901,
+      -0.0
+     ]
+    },
+    {
+     "addr": "/tracking/trackers/1/rotation",
+     "args": [
+      0.0,
+      178.27048,
+      0.0
+     ]
+    },
+    {
+     "addr": "/tracking/trackers/2/position",
+     "args": [
+      0.09974,
+      0.051,
+      0.00301
+     ]
+    },
+    {
+     "addr": "/tracking/trackers/2/rotation",
+     "args": [
+      0.0,
+      178.27066,
+      0.0
+     ]
+    },
+    {
+     "addr": "/tracking/trackers/3/position",
+     "args": [
+      -0.09974,
+      0.051,
+      -0.00301
+     ]
+    },
+    {
+     "addr": "/tracking/trackers/3/rotation",
+     "args": [
+      0.0,
+      178.27011,
+      0.0
+     ]
+    },
+    {
+     "addr": "/tracking/trackers/4/position",
+     "args": [
+      0.10064,
+      0.451,
+      -0.02691
+     ]
+    },
+    {
+     "addr": "/tracking/trackers/4/rotation",
+     "args": [
+      0.0,
+      178.27258,
+      0.0
+     ]
+    },
+    {
+     "addr": "/tracking/trackers/5/position",
+     "args": [
+      -0.09883,
+      0.451,
+      -0.03293
+     ]
+    },
+    {
+     "addr": "/tracking/trackers/5/rotation",
+     "args": [
+      0.0,
+      178.27182,
+      0.0
+     ]
+    },
+    {
+     "addr": "/tracking/trackers/6/position",
+     "args": [
+      0.0,
+      1.401,
+      -0.0
+     ]
+    },
+    {
+     "addr": "/tracking/trackers/6/rotation",
+     "args": [
+      0.0,
+      178.2692,
+      0.0
+     ]
+    }
+   ]
+  },
+  {
+   "udp_json": {
+    "expressions": {
+     "EyeClosedLeft": 0.6,
+     "EyeLeftX": 0.0,
+     "EyeLeftY": 0.3,
+     "EyeLidLeft": 0.3,
+     "EyeLidRight": 0.75,
+     "EyeRightX": 0.0,
+     "EyeRightY": 0.3,
+     "EyeX": 0.0,
+     "EyeY": 0.3,
+     "JawOpen": 0.4,
+     "LipFunnelLowerLeft": 0.2,
+     "LipFunnelLowerRight": 0.2,
+     "LipFunnelUpperLeft": 0.2,
+     "LipFunnelUpperRight": 0.2,
+     "MouthCornerPullLeft": 0.4,
+     "MouthCornerPullRight": 0.3,
+     "MouthCornerSlantLeft": 0.4,
+     "MouthCornerSlantRight": 0.3
+    },
+    "eyes": {
+     "pitch": 0.05,
+     "yaw": -0.1
+    },
+    "fps": 30.0,
+    "t": 100.06667,
+    "trackers": [
+     {
+      "index": 1,
+      "pos": [
+       0.0,
+       0.901,
+       0.0
+      ],
+      "role": "hip",
+      "rot": [
+       0.0,
+       0.99909,
+       0.0,
+       -0.04259
+      ]
+     },
+     {
+      "index": 2,
+      "pos": [
+       0.09874,
+       0.051,
+       -0.00843
+      ],
+      "role": "left_foot",
+      "rot": [
+       0.0,
+       0.99909,
+       -0.0,
+       -0.04258
+      ]
+     },
+     {
+      "index": 3,
+      "pos": [
+       -0.09874,
+       0.051,
+       0.00843
+      ],
+      "role": "right_foot",
+      "rot": [
+       0.0,
+       0.99909,
+       -0.0,
+       -0.04263
+      ]
+     },
+     {
+      "index": 4,
+      "pos": [
+       0.10126,
+       0.451,
+       0.02119
+      ],
+      "role": "left_knee",
+      "rot": [
+       0.0,
+       0.9991,
+       -0.0,
+       -0.04249
+      ]
+     },
+     {
+      "index": 5,
+      "pos": [
+       -0.09621,
+       0.451,
+       0.03805
+      ],
+      "role": "right_knee",
+      "rot": [
+       0.0,
+       0.99909,
+       -0.0,
+       -0.04255
+      ]
+     },
+     {
+      "index": 6,
+      "pos": [
+       0.0,
+       1.401,
+       0.0
+      ],
+      "role": "chest",
+      "rot": [
+       0.0,
+       0.99909,
+       0.0,
+       -0.04266
+      ]
+     }
+    ],
+    "v": 1
+   },
+   "vmt": [
+    {
+     "addr": "/VMT/Room/Unity",
+     "args": [
+      1,
+      1,
+      0.0,
+      0.0,
+      0.901,
+      -0.0,
+      -0.0,
+      -0.99909,
+      0.0,
+      -0.04259
+     ]
+    },
+    {
+     "addr": "/VMT/Room/Unity",
+     "args": [
+      2,
+      1,
+      0.0,
+      0.09874,
+      0.051,
+      0.00843,
+      -0.0,
+      -0.99909,
+      -0.0,
+      -0.04258
+     ]
+    },
+    {
+     "addr": "/VMT/Room/Unity",
+     "args": [
+      3,
+      1,
+      0.0,
+      -0.09874,
+      0.051,
+      -0.00843,
+      -0.0,
+      -0.99909,
+      -0.0,
+      -0.04263
+     ]
+    },
+    {
+     "addr": "/VMT/Room/Unity",
+     "args": [
+      4,
+      1,
+      0.0,
+      0.10126,
+      0.451,
+      -0.02119,
+      -0.0,
+      -0.9991,
+      -0.0,
+      -0.04249
+     ]
+    },
+    {
+     "addr": "/VMT/Room/Unity",
+     "args": [
+      5,
+      1,
+      0.0,
+      -0.09621,
+      0.451,
+      -0.03805,
+      -0.0,
+      -0.99909,
+      -0.0,
+      -0.04255
+     ]
+    },
+    {
+     "addr": "/VMT/Room/Unity",
+     "args": [
+      6,
+      1,
+      0.0,
+      0.0,
+      1.401,
+      -0.0,
+      -0.0,
+      -0.99909,
+      0.0,
+      -0.04266
+     ]
+    }
+   ],
+   "vrcft": [
+    {
+     "addr": "/avatar/parameters/v2/JawOpen",
+     "args": [
+      0.4
+     ]
+    },
+    {
+     "addr": "/avatar/parameters/v2/MouthCornerPullLeft",
+     "args": [
+      0.4
+     ]
+    },
+    {
+     "addr": "/avatar/parameters/v2/MouthCornerSlantLeft",
+     "args": [
+      0.4
+     ]
+    },
+    {
+     "addr": "/avatar/parameters/v2/MouthCornerPullRight",
+     "args": [
+      0.3
+     ]
+    },
+    {
+     "addr": "/avatar/parameters/v2/MouthCornerSlantRight",
+     "args": [
+      0.3
+     ]
+    },
+    {
+     "addr": "/avatar/parameters/v2/EyeClosedLeft",
+     "args": [
+      0.6
+     ]
+    },
+    {
+     "addr": "/avatar/parameters/v2/LipFunnelUpperLeft",
+     "args": [
+      0.2
+     ]
+    },
+    {
+     "addr": "/avatar/parameters/v2/LipFunnelUpperRight",
+     "args": [
+      0.2
+     ]
+    },
+    {
+     "addr": "/avatar/parameters/v2/LipFunnelLowerLeft",
+     "args": [
+      0.2
+     ]
+    },
+    {
+     "addr": "/avatar/parameters/v2/LipFunnelLowerRight",
+     "args": [
+      0.2
+     ]
+    },
+    {
+     "addr": "/avatar/parameters/v2/EyeLeftX",
+     "args": [
+      0.0
+     ]
+    },
+    {
+     "addr": "/avatar/parameters/v2/EyeLeftY",
+     "args": [
+      0.3
+     ]
+    },
+    {
+     "addr": "/avatar/parameters/v2/EyeRightX",
+     "args": [
+      0.0
+     ]
+    },
+    {
+     "addr": "/avatar/parameters/v2/EyeRightY",
+     "args": [
+      0.3
+     ]
+    },
+    {
+     "addr": "/avatar/parameters/v2/EyeX",
+     "args": [
+      0.0
+     ]
+    },
+    {
+     "addr": "/avatar/parameters/v2/EyeY",
+     "args": [
+      0.3
+     ]
+    },
+    {
+     "addr": "/avatar/parameters/v2/EyeLidLeft",
+     "args": [
+      0.3
+     ]
+    },
+    {
+     "addr": "/avatar/parameters/v2/EyeLidRight",
+     "args": [
+      0.75
+     ]
+    },
+    {
+     "addr": "/tracking/eye/CenterPitchYaw",
+     "args": [
+      -2.86479,
+      5.72958
+     ]
+    }
+   ],
+   "vrchat": [
+    {
+     "addr": "/tracking/trackers/1/position",
+     "args": [
+      0.0,
+      0.901,
+      -0.0
+     ]
+    },
+    {
+     "addr": "/tracking/trackers/1/rotation",
+     "args": [
+      0.0,
+      175.11777,
+      0.0
+     ]
+    },
+    {
+     "addr": "/tracking/trackers/2/position",
+     "args": [
+      0.09874,
+      0.051,
+      0.00843
+     ]
+    },
+    {
+     "addr": "/tracking/trackers/2/rotation",
+     "args": [
+      0.0,
+      175.11931,
+      0.0
+     ]
+    },
+    {
+     "addr": "/tracking/trackers/3/position",
+     "args": [
+      -0.09874,
+      0.051,
+      -0.00843
+     ]
+    },
+    {
+     "addr": "/tracking/trackers/3/rotation",
+     "args": [
+      0.0,
+      175.11397,
+      0.0
+     ]
+    },
+    {
+     "addr": "/tracking/trackers/4/position",
+     "args": [
+      0.10126,
+      0.451,
+      -0.02119
+     ]
+    },
+    {
+     "addr": "/tracking/trackers/4/rotation",
+     "args": [
+      0.0,
+      175.12949,
+      0.0
+     ]
+    },
+    {
+     "addr": "/tracking/trackers/5/position",
+     "args": [
+      -0.09621,
+      0.451,
+      -0.03805
+     ]
+    },
+    {
+     "addr": "/tracking/trackers/5/rotation",
+     "args": [
+      0.0,
+      175.12292,
+      0.0
+     ]
+    },
+    {
+     "addr": "/tracking/trackers/6/position",
+     "args": [
+      0.0,
+      1.401,
+      -0.0
+     ]
+    },
+    {
+     "addr": "/tracking/trackers/6/rotation",
+     "args": [
+      0.0,
+      175.11061,
+      0.0
+     ]
+    }
+   ]
+  },
+  {
+   "udp_json": {
+    "expressions": {
+     "EyeClosedLeft": 0.9,
+     "EyeLeftX": 0.0,
+     "EyeLeftY": 0.3,
+     "EyeLidLeft": 0.075,
+     "EyeLidRight": 0.75,
+     "EyeRightX": 0.0,
+     "EyeRightY": 0.3,
+     "EyeX": 0.0,
+     "EyeY": 0.3,
+     "JawOpen": 0.6,
+     "LipFunnelLowerLeft": 0.3,
+     "LipFunnelLowerRight": 0.3,
+     "LipFunnelUpperLeft": 0.3,
+     "LipFunnelUpperRight": 0.3,
+     "MouthCornerPullLeft": 0.2,
+     "MouthCornerPullRight": 0.1,
+     "MouthCornerSlantLeft": 0.2,
+     "MouthCornerSlantRight": 0.1
+    },
+    "eyes": {
+     "pitch": 0.05,
+     "yaw": -0.1
+    },
+    "fps": 30.0,
+    "t": 100.1,
+    "trackers": [
+     {
+      "index": 1,
+      "pos": [
+       0.0,
+       0.901,
+       0.0
+      ],
+      "role": "hip",
+      "rot": [
+       0.0,
+       0.99677,
+       0.0,
+       -0.08035
+      ]
+     },
+     {
+      "index": 2,
+      "pos": [
+       0.09663,
+       0.051,
+       -0.01568
+      ],
+      "role": "left_foot",
+      "rot": [
+       0.0,
+       0.99677,
+       -0.0,
+       -0.08031
+      ]
+     },
+     {
+      "index": 3,
+      "pos": [
+       -0.09663,
+       0.051,
+       0.01568
+      ],
+      "role": "right_foot",
+      "rot": [
+       0.0,
+       0.99675,
+       -0.0,
+       -0.0805
+      ]
+     },
+     {
+      "index": 4,
+      "pos": [
+       0.10132,
+       0.451,
+       0.0133
+      ],
+      "role": "left_knee",
+      "rot": [
+       0.0,
+       0.99679,
+       -0.0,
+       -0.08009
+      ]
+     },
+     {
+      "index": 5,
+      "pos": [
+       -0.09193,
+       0.451,
+       0.04466
+      ],
+      "role": "right_knee",
+      "rot": [
+       0.0,
+       0.99677,
+       -0.0,
+       -0.08029
+      ]
+     },
+     {
+      "index": 6,
+      "pos": [
+       0.0,
+       1.401,
+       0.0
+      ],
+      "role": "chest",
+      "rot": [
+       0.0,
+       0.99675,
+       0.0,
+       -0.08052
+      ]
+     }
+    ],
+    "v": 1
+   },
+   "vmt": [
+    {
+     "addr": "/VMT/Room/Unity",
+     "args": [
+      1,
+      1,
+      0.0,
+      0.0,
+      0.901,
+      -0.0,
+      -0.0,
+      -0.99677,
+      0.0,
+      -0.08035
+     ]
+    },
+    {
+     "addr": "/VMT/Room/Unity",
+     "args": [
+      2,
+      1,
+      0.0,
+      0.09663,
+      0.051,
+      0.01568,
+      -0.0,
+      -0.99677,
+      -0.0,
+      -0.08031
+     ]
+    },
+    {
+     "addr": "/VMT/Room/Unity",
+     "args": [
+      3,
+      1,
+      0.0,
+      -0.09663,
+      0.051,
+      -0.01568,
+      -0.0,
+      -0.99675,
+      -0.0,
+      -0.0805
+     ]
+    },
+    {
+     "addr": "/VMT/Room/Unity",
+     "args": [
+      4,
+      1,
+      0.0,
+      0.10132,
+      0.451,
+      -0.0133,
+      -0.0,
+      -0.99679,
+      -0.0,
+      -0.08009
+     ]
+    },
+    {
+     "addr": "/VMT/Room/Unity",
+     "args": [
+      5,
+      1,
+      0.0,
+      -0.09193,
+      0.451,
+      -0.04466,
+      -0.0,
+      -0.99677,
+      -0.0,
+      -0.08029
+     ]
+    },
+    {
+     "addr": "/VMT/Room/Unity",
+     "args": [
+      6,
+      1,
+      0.0,
+      0.0,
+      1.401,
+      -0.0,
+      -0.0,
+      -0.99675,
+      0.0,
+      -0.08052
+     ]
+    }
+   ],
+   "vrcft": [
+    {
+     "addr": "/avatar/parameters/v2/JawOpen",
+     "args": [
+      0.6
+     ]
+    },
+    {
+     "addr": "/avatar/parameters/v2/MouthCornerPullLeft",
+     "args": [
+      0.2
+     ]
+    },
+    {
+     "addr": "/avatar/parameters/v2/MouthCornerSlantLeft",
+     "args": [
+      0.2
+     ]
+    },
+    {
+     "addr": "/avatar/parameters/v2/MouthCornerPullRight",
+     "args": [
+      0.1
+     ]
+    },
+    {
+     "addr": "/avatar/parameters/v2/MouthCornerSlantRight",
+     "args": [
+      0.1
+     ]
+    },
+    {
+     "addr": "/avatar/parameters/v2/EyeClosedLeft",
+     "args": [
+      0.9
+     ]
+    },
+    {
+     "addr": "/avatar/parameters/v2/LipFunnelUpperLeft",
+     "args": [
+      0.3
+     ]
+    },
+    {
+     "addr": "/avatar/parameters/v2/LipFunnelUpperRight",
+     "args": [
+      0.3
+     ]
+    },
+    {
+     "addr": "/avatar/parameters/v2/LipFunnelLowerLeft",
+     "args": [
+      0.3
+     ]
+    },
+    {
+     "addr": "/avatar/parameters/v2/LipFunnelLowerRight",
+     "args": [
+      0.3
+     ]
+    },
+    {
+     "addr": "/avatar/parameters/v2/EyeLeftX",
+     "args": [
+      0.0
+     ]
+    },
+    {
+     "addr": "/avatar/parameters/v2/EyeLeftY",
+     "args": [
+      0.3
+     ]
+    },
+    {
+     "addr": "/avatar/parameters/v2/EyeRightX",
+     "args": [
+      0.0
+     ]
+    },
+    {
+     "addr": "/avatar/parameters/v2/EyeRightY",
+     "args": [
+      0.3
+     ]
+    },
+    {
+     "addr": "/avatar/parameters/v2/EyeX",
+     "args": [
+      0.0
+     ]
+    },
+    {
+     "addr": "/avatar/parameters/v2/EyeY",
+     "args": [
+      0.3
+     ]
+    },
+    {
+     "addr": "/avatar/parameters/v2/EyeLidLeft",
+     "args": [
+      0.075
+     ]
+    },
+    {
+     "addr": "/avatar/parameters/v2/EyeLidRight",
+     "args": [
+      0.75
+     ]
+    },
+    {
+     "addr": "/tracking/eye/CenterPitchYaw",
+     "args": [
+      -2.86479,
+      5.72958
+     ]
+    }
+   ],
+   "vrchat": [
+    {
+     "addr": "/tracking/trackers/1/position",
+     "args": [
+      0.0,
+      0.901,
+      -0.0
+     ]
+    },
+    {
+     "addr": "/tracking/trackers/1/rotation",
+     "args": [
+      0.0,
+      170.78279,
+      0.0
+     ]
+    },
+    {
+     "addr": "/tracking/trackers/2/position",
+     "args": [
+      0.09663,
+      0.051,
+      0.01568
+     ]
+    },
+    {
+     "addr": "/tracking/trackers/2/rotation",
+     "args": [
+      0.0,
+      170.78717,
+      0.0
+     ]
+    },
+    {
+     "addr": "/tracking/trackers/3/position",
+     "args": [
+      -0.09663,
+      0.051,
+      -0.01568
+     ]
+    },
+    {
+     "addr": "/tracking/trackers/3/rotation",
+     "args": [
+      0.0,
+      170.76579,
+      0.0
+     ]
+    },
+    {
+     "addr": "/tracking/trackers/4/position",
+     "args": [
+      0.10132,
+      0.451,
+      -0.0133
+     ]
+    },
+    {
+     "addr": "/tracking/trackers/4/rotation",
+     "args": [
+      0.0,
+      170.81206,
+      0.0
+     ]
+    },
+    {
+     "addr": "/tracking/trackers/5/position",
+     "args": [
+      -0.09193,
+      0.451,
+      -0.04466
+     ]
+    },
+    {
+     "addr": "/tracking/trackers/5/rotation",
+     "args": [
+      0.0,
+      170.78995,
+      0.0
+     ]
+    },
+    {
+     "addr": "/tracking/trackers/6/position",
+     "args": [
+      0.0,
+      1.401,
+      -0.0
+     ]
+    },
+    {
+     "addr": "/tracking/trackers/6/rotation",
+     "args": [
+      0.0,
+      170.7626,
+      0.0
+     ]
+    }
+   ]
+  }
+ ]
+}

@@ -3,75 +3,29 @@
 import json
 import socket
 
-import numpy as np
 import pytest
 from tests.conftest import standing_landmarks
+from tests.fakes import FakeClock, FakeSource, StaticFaceBackend, StaticPoseBackend
 
 from easyfbt import trackers as tk
 from easyfbt.app import CameraUnit, Pipeline
-from easyfbt.capture import LatestFrame
 from easyfbt.config import parse_config
 from easyfbt.osc import decode_message
 from easyfbt.outputs.udp_json import UdpJsonOutput
 from easyfbt.outputs.vrcft import VrcftOutput
-from easyfbt.types import FaceResult, PoseResult
 
 
-class FakeSource:
-    def __init__(self):
-        self.latest = LatestFrame()
-        self.started = False
-        self.stopped = False
-
-    def start(self):
-        self.started = True
-
-    def stop(self):
-        self.stopped = True
-
-    def push(self, ts: float):
-        self.latest.put(np.zeros((4, 4, 3), dtype=np.uint8), ts)
+def make_pose_backend():
+    return StaticPoseBackend(standing_landmarks())
 
 
-class FakePoseBackend:
-    """Returns the standing skeleton in *camera* space for a yaw-0 camera."""
-
-    def __init__(self):
-        room = standing_landmarks()
-        # Invert the yaw-0 room transform: camera x = room x, y = -room y,
-        # z = -room z, so that to_room() reproduces the standing skeleton.
-        self.camera_landmarks = room * np.array([1.0, -1.0, -1.0])
-        self.closed = False
-
-    def process(self, frame, timestamp):
-        return PoseResult(
-            world_landmarks=self.camera_landmarks.copy(),
-            visibility=np.ones(tk.NUM_LANDMARKS),
-            timestamp=timestamp,
-        )
-
-    def close(self):
-        self.closed = True
+def make_face_backend():
+    return StaticFaceBackend({"jawOpen": 0.5, "eyeBlinkLeft": 1.0})
 
 
 class NoDetectionBackend:
     def process(self, frame, timestamp):
         return None
-
-    def close(self):
-        pass
-
-
-class FakeFaceBackend:
-    def __init__(self, jaw=0.5):
-        self.jaw = jaw
-
-    def process(self, frame, timestamp):
-        return FaceResult(
-            blendshapes={"jawOpen": self.jaw, "eyeBlinkLeft": 1.0},
-            confidence=0.9,
-            timestamp=timestamp,
-        )
 
     def close(self):
         pass
@@ -86,18 +40,6 @@ def receiver():
     sock.close()
 
 
-class FakeClock:
-    def __init__(self):
-        self.now = 100.0
-
-    def tick(self, dt=1 / 30):
-        self.now += dt
-        return self.now
-
-    def __call__(self):
-        return self.now
-
-
 def make_pipeline(receiver, outputs=None, cameras=None):
     config = parse_config({})
     clock = FakeClock()
@@ -107,8 +49,8 @@ def make_pipeline(receiver, outputs=None, cameras=None):
             CameraUnit(
                 source=source,
                 yaw_deg=0.0,
-                pose_backend=FakePoseBackend(),
-                face_backend=FakeFaceBackend(),
+                pose_backend=make_pose_backend(),
+                face_backend=make_face_backend(),
             )
         ]
     if outputs is None:
@@ -171,8 +113,8 @@ def test_detection_loss_keeps_last_good_pose(receiver):
 def test_two_cameras_fuse(receiver):
     a, b = FakeSource(), FakeSource()
     cameras = [
-        CameraUnit(source=a, yaw_deg=0.0, pose_backend=FakePoseBackend()),
-        CameraUnit(source=b, yaw_deg=0.0, pose_backend=FakePoseBackend()),
+        CameraUnit(source=a, yaw_deg=0.0, pose_backend=make_pose_backend()),
+        CameraUnit(source=b, yaw_deg=0.0, pose_backend=make_pose_backend()),
     ]
     pipeline, cameras, clock = make_pipeline(receiver, cameras=cameras)
     a.push(clock())
