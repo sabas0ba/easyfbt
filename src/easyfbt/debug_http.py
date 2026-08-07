@@ -19,28 +19,30 @@ from __future__ import annotations
 import json
 import threading
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
+from urllib.parse import parse_qs, urlparse
 
-_INDEX_HTML = b"""<!doctype html>
-<html><head><title>easyfbt debug</title>
-<style>body{background:#111;color:#eee;font-family:sans-serif;text-align:center}
-img{max-width:96vw;max-height:80vh}</style></head>
-<body><h3>easyfbt debug</h3><img src="/stream" alt="debug stream">
-<p><a href="/state" style="color:#8cf">/state</a>
-<a href="/frame" style="color:#8cf">/frame</a></p></body></html>
-"""
+from easyfbt.debug_ui import UI_HTML
 
 _BOUNDARY = b"easyfbtframe"
 
+_MAX_BODY = 1 << 20  # config documents are tiny; reject anything bigger
+
 
 class DebugHttpServer:
-    """Threaded HTTP server publishing the latest debug frame and state."""
+    """Threaded HTTP server publishing the latest debug frame and state.
 
-    def __init__(self, host: str = "127.0.0.1", port: int = 8089):
+    With a ``controller`` attached (see :class:`easyfbt.control.Controller`)
+    the page also exposes the settings/calibration API:
+    ``GET /config`` and ``POST /config[?save=1]``.
+    """
+
+    def __init__(self, host: str = "127.0.0.1", port: int = 8089, controller=None):
         self._cond = threading.Condition()
         self._jpeg: bytes | None = None
         self._state: dict = {}
         self._seq = 0
         self._closed = False
+        self.controller = controller
 
         publisher = self
 
@@ -52,7 +54,7 @@ class DebugHttpServer:
 
             def do_GET(self):
                 if self.path == "/":
-                    self._send(200, "text/html; charset=utf-8", _INDEX_HTML)
+                    self._send(200, "text/html; charset=utf-8", UI_HTML)
                 elif self.path == "/frame":
                     jpeg = publisher.latest_jpeg()
                     if jpeg is None:
@@ -62,10 +64,41 @@ class DebugHttpServer:
                 elif self.path == "/state":
                     body = json.dumps(publisher.latest_state()).encode()
                     self._send(200, "application/json", body)
+                elif self.path == "/config":
+                    if publisher.controller is None:
+                        self._send(404, "text/plain", b"no controller attached\n")
+                    else:
+                        body = json.dumps(publisher.controller.get_config()).encode()
+                        self._send(200, "application/json", body)
                 elif self.path == "/stream":
                     self._stream()
                 else:
                     self._send(404, "text/plain", b"not found\n")
+
+            def do_POST(self):
+                url = urlparse(self.path)
+                if url.path != "/config":
+                    self._send(404, "text/plain", b"not found\n")
+                    return
+                if publisher.controller is None:
+                    self._send(404, "text/plain", b"no controller attached\n")
+                    return
+                try:
+                    length = int(self.headers.get("Content-Length", "0"))
+                except ValueError:
+                    length = 0
+                if not 0 < length <= _MAX_BODY:
+                    self._send(400, "text/plain", b"bad content length\n")
+                    return
+                try:
+                    data = json.loads(self.rfile.read(length))
+                except (json.JSONDecodeError, UnicodeDecodeError):
+                    self._send(400, "text/plain", b"invalid JSON\n")
+                    return
+                save = parse_qs(url.query).get("save", ["0"])[0] in ("1", "true")
+                result = publisher.controller.set_config(data, save=save)
+                code = 200 if result.get("ok") else 400
+                self._send(code, "application/json", json.dumps(result).encode())
 
             def _send(self, code: int, ctype: str, body: bytes):
                 self.send_response(code)

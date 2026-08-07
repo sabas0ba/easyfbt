@@ -72,6 +72,30 @@ python -m easyfbt --no-window      # デバッグウィンドウなしで起動
 - `/state` — トラッカー座標・表情の現在値JSON(スキーマは UDP JSON 出力と同一)
 - `/frame` — 現在フレームのJPEG1枚
 
+## 設定UI(ブラウザコントロールパネル)
+
+`[debug] http_enabled = true` にすると、デバッグビューが**設定・キャリブレーションUI**になります
+(`http://127.0.0.1:8089/`)。変更は「適用」で実行中のトラッキングに即時反映、
+「適用して保存」で `config.toml` に永続化され次回起動後も有効です。
+
+**出力設定タブ** — 4系統の出力のON/OFF・宛先(host/port)・VRCFTのprefix/視線をGUIで切替:
+
+![出力設定タブ](docs/images/ui-outputs.png)
+
+**カメラ配置タブ** — 2D(真上図)と3Dでカメラ位置をグラフィカルにキャリブレーション:
+
+![カメラ配置タブ](docs/images/ui-cameras.png)
+
+- 真上図: カメラを**ドラッグで移動**、**ホイールで向き(yaw)を回転**。視野のくさびと「あなた」(原点)が目安
+- 3Dビュー: 配置したカメラ(青)と**トラッキング中のトラッカー実測位置(緑)**を重ねて表示 —
+  向きの設定が正しければ、緑の点群が原点付近に立った人型になります
+- 位置・向きはトラッキングを止めずに即時反映。`device` や解像度などは保存後の再起動時に反映され、
+  その旨がメッセージに表示されます
+
+**カメラ映像のオン/オフ** — プレビュータブのチェックボックスで、映像を隠して黒背景+スケルトンのみの
+表示に切替できます(配信時のプライバシー用。OpenCVウィンドウでは `v` キーで同じ切替)。
+映像はサーバ側で描画前に破棄されるため、オフの間はMJPEGストリームにもカメラ映像は含まれません。
+
 ## VRChat で使う(SteamVR不要)
 
 1. easyfbt 側: `[output.vrchat] enabled = true`(既定)と `[output.vrcft] enabled = true`(既定)
@@ -185,7 +209,8 @@ docker compose up --build       # または podman-compose up --build
 | `output.vrcft.*` | 有効, `127.0.0.1:9000` | 表情(UE)出力。`address_prefix` で宛先形式を変更 |
 | `output.udp_json.*` | 無効, `127.0.0.1:9199` | 汎用JSON出力 |
 | `debug.window` | `true` | OpenCVデバッグウィンドウ |
-| `debug.http_enabled` / `http_port` | `false` / `8089` | ブラウザデバッグビュー |
+| `debug.show_video` | `true` | カメラ映像の表示。`false` で黒背景+スケルトンのみ(`v` キー/UIで切替) |
+| `debug.http_enabled` / `http_port` | `false` / `8089` | ブラウザの設定UI+デバッグビュー |
 
 ## トラブルシューティング
 

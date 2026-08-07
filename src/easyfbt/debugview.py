@@ -47,11 +47,13 @@ def draw_overlay(
     pose: PoseResult | None,
     face: FaceResult | None,
     tracking: TrackingFrame,
+    show_video: bool = True,
 ) -> np.ndarray:
-    """Return a copy of the frame annotated with the current tracking state."""
+    """Return the annotated frame; with ``show_video=False`` the overlay is
+    drawn on black so the camera image never leaves the process."""
     import cv2
 
-    canvas = frame_bgr.copy()
+    canvas = frame_bgr.copy() if show_video else np.zeros_like(frame_bgr)
     h, w = canvas.shape[:2]
 
     if pose is not None and pose.image_landmarks is not None:
@@ -112,13 +114,17 @@ def draw_overlay(
 
 
 class DebugView:
-    """Local OpenCV window; render() returns False when the user quits."""
+    """Local OpenCV window; render() returns False when the user quits.
 
-    def __init__(self, window_name: str = "easyfbt debug"):
+    Keys: ``q`` quits, ``v`` toggles the camera video behind the overlay.
+    """
+
+    def __init__(self, window_name: str = "easyfbt debug", show_video: bool = True):
         import cv2
 
         self._cv2 = cv2
         self._window = window_name
+        self.show_video = show_video
         cv2.namedWindow(window_name, cv2.WINDOW_NORMAL)
 
     def render(
@@ -128,9 +134,12 @@ class DebugView:
         face: FaceResult | None,
         tracking: TrackingFrame,
     ) -> bool:
-        canvas = draw_overlay(frame_bgr, pose, face, tracking)
+        canvas = draw_overlay(frame_bgr, pose, face, tracking, show_video=self.show_video)
         self._cv2.imshow(self._window, canvas)
-        return self._cv2.waitKey(1) & 0xFF != ord("q")
+        key = self._cv2.waitKey(1) & 0xFF
+        if key == ord("v"):
+            self.show_video = not self.show_video
+        return key != ord("q")
 
     def close(self) -> None:
         self._cv2.destroyWindow(self._window)
@@ -139,12 +148,19 @@ class DebugView:
 class HttpDebugView:
     """Publishes the annotated preview to a DebugHttpServer (headless)."""
 
-    def __init__(self, host: str = "127.0.0.1", port: int = 8089, jpeg_quality: int = 80):
+    def __init__(
+        self,
+        host: str = "127.0.0.1",
+        port: int = 8089,
+        jpeg_quality: int = 80,
+        controller=None,
+    ):
         import cv2
 
         self._cv2 = cv2
         self._quality = jpeg_quality
-        self.server = DebugHttpServer(host, port)
+        self._controller = controller
+        self.server = DebugHttpServer(host, port, controller=controller)
 
     def render(
         self,
@@ -153,7 +169,8 @@ class HttpDebugView:
         face: FaceResult | None,
         tracking: TrackingFrame,
     ) -> bool:
-        canvas = draw_overlay(frame_bgr, pose, face, tracking)
+        show = self._controller.show_video if self._controller is not None else True
+        canvas = draw_overlay(frame_bgr, pose, face, tracking, show_video=show)
         ok, jpeg = self._cv2.imencode(
             ".jpg", canvas, [int(self._cv2.IMWRITE_JPEG_QUALITY), self._quality]
         )
